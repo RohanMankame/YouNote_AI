@@ -12,6 +12,11 @@ Deployed: https://younote-q32b.onrender.com
 
 - Deployed via Render
 
+## Example
+![YouNote Example (1)](https://github.com/user-attachments/assets/fea4306a-d07c-4f0a-9a20-c39379698678)
+
+![YouNote Example2 (1)](https://github.com/user-attachments/assets/5f0b62b8-62d6-437f-8903-fbb16134a4ae)
+
 
 ## Features
 - User authentication (signup, login)
