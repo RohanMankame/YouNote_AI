@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Summarizer</title>
+    <!-- Tailwind CDN --> <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to { 
+                transform: rotate(360deg);
+            }
+        }
+         
+        
+         @-webkit-keyframes rotate {
+            from {
+                -webkit-transform: rotate(0deg);
+            }
+            to { 
+                -webkit-transform: rotate(360deg);
+            }
+        }
+        
+        .load {
+            width: 100px;
+            height: 100px;
+            margin: 110px auto 0;
+            border:solid 10px #8822aa;
+            border-radius: 50%;
+            border-right-color: transparent;
+            border-bottom-color: transparent;
+             -webkit-transition: all 0.5s ease-in;
+            -webkit-animation-name:             rotate; 
+            -webkit-animation-duration:         1.0s; 
+            -webkit-animation-iteration-count:  infinite;
+            -webkit-animation-timing-function: linear;
+                
+                 transition: all 0.5s ease-in;
+            animation-name:             rotate; 
+            animation-duration:         1.0s; 
+            animation-iteration-count:  infinite;
+            animation-timing-function: linear; 
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen bg-gray-900 font-sans antialis">
+    <!-- Nav Bar -->
+<nav class="bg-purple-600 p-4 text-white flex flex-col sm:flex-row sm:justify-between items-center">
+    <div class="mb-2 sm:mb-0">
+       <h1 class="text-3xl font-bold"><a href="/">YouNote</a></h1>
+    </div>
+    <div class="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
+        <!-- <p class="text-white">Hello {{user.username}}</p> <hr> -->
+         <a href="note-list" class="text-white hover:underline">MyNotes</a>
+        <a href="logout" class="text-white hover:underline">LogOut</a>
+    </div>
+</nav>
+     
+    
+
+    <!--  Main -->
+
+     <div class=" w-full flex-grow-container mx-auto mt-10 px-4 sm:px0">
+
+        <div class="text-center my-4">
+                <a href="/note-list" class="inline-block bg-purple-600 text-white px-6 py-2 rounded-md font-semibold hover:bg-purple-800 transition">
+                    MyNotes
+                </a>
+        </div>
+
+        <div class="w-full max-w-3xl mx-auto bg-gray-300 p-6 rounded-lg shadow-md transition-transform transform hover:scale-105 flex flex-col">
+            <!-- Intro Section -->
+            <div class="text-center">
+                <p class="text-black font-bold">Hello {{user.username}}</p>
+                <h2 class="text-2xl font-bold mb-4">Welcome to YouNote</h2>
+                <!-- <div class="text-center my-4">
+                <a href="/note-list" class="inline-block bg-purple-600 text-white px-6 py-2 rounded-md font-semibold hover:bg-purple-800 transition">
+                    MyNotes
+                </a>
+                </div> -->
+                <p class="text-black">YouNote is your AI-powered companion for effortless learning. Instantly generate clear, concise notes from any YouTube video—just paste the link and let YouNote do the rest! All your notes are saved for easy access, so you can revisit key insights and the original videos anytime. <br> Start noting smarter and learning faster with YouNote today!  
+                </p>
+            </div>
+
+
+            <!-- <div class="text-center my-4">
+                <a href="/note-list" class="inline-block bg-purple-600 text-white px-6 py-2 rounded-md font-semibold hover:bg-purple-800 transition">
+                    Your Notes
+                </a>
+            </div> -->
+
+
+            <br>
+       <!--  Youtube Section -->
+         <div>
+            <h2 class="text-xl mb-4 font-semibold">Enter Youtube link</h2>
+            <div class="flex flex-col sm:flex-row ">
+                <input id="youtubeLink" type="url" placeholder="Paste Youtube Link"
+                    class="flex-grow w-full sm:w-auto p-2 border border-purple-400 rounded-md sm:rounded-l-md sm:rounded-r-none" />
+                <button id="generateBlogButton"
+                    class="bg-purple-600 text-white px-4 py-2 rounded-md sm:rounded-l-none sm:rounded-r-md hover:bg-purple-800 transition-colours w-full sm:w-auto">
+                    Generate Notes
+                </button>
+            </div>
+            <!-- Section for loading circle -->
+            <div style="display: none;" id="loading-circle" class="load"></div>
+        </div>
+
+        
+
+
+           <!--  Generated Blog Section -->
+            <section class="mt-10 flex-grow">
+                <h2 class="text-xl mb-4 font-semibold">Generated Note</h2>
+                <div id="blogContent" class="mt-2 text-gray-700 space-y-4" style="white-space: pre-line;">
+                    
+
+                </div>
+
+            </section>
+
+
+         </div>
+
+        </div>
+        
+       
+     </div>
+
+     <footer class="text-center p-4 text-white mt-6">
+        Powered By Rohan Mankame
+    </footer>
+
+
+    <script>
+
+        document.getElementById('generateBlogButton').addEventListener('click', async () => {
+            
+
+            const youtubeLink = document.getElementById('youtubeLink').value;
+            const blogContent = document.getElementById('blogContent');
+            
+            if(youtubeLink) {
+                document.getElementById('loading-circle').style.display = 'flex';
+                
+                blogContent.innerHTML = ''; // Clear previous content
+
+                const endpointUrl = '/generate-blog';
+                
+                try {
+                    const response = await fetch(endpointUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ link: youtubeLink })
+                    });
+
+                    const data = await response.json();
+
+                    blogContent.innerHTML = data.content;
+
+                } catch (error) {
+                    console.error("Error occurred:", error);
+                    alert("Something went wrong. Please try again later.");
+                    
+                }
+                document.getElementById('loading-circle').style.display = 'none';
+            } else {
+                alert("Please enter a YouTube link.");
+            }
+        });
+
+    </script>
+
+</body>
+</html>

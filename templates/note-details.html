@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Post Details</title>
+    <!-- Tailwind CDN --> <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 font-sans antialiased">
+    <!-- Nav Bar -->
+     <nav class="bg-purple-600 p-4 text-white flex flex-col sm:flex-row sm:justify-between items-center">
+        <div class="mb-2 sm:mb-0">
+        <h1 class="text-3xl font-bold"><a href="/">YouNote</a></h1>
+        </div>
+        <div class="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
+            <!-- <p class="text-white">Hello {{user.username}}</p> <hr> -->
+             <a href="note-list" class="text-white hover:underline">MyNotes</a>
+            <a href="/" class="text-white hover:underline">GenerateNotes</a>
+            <a href="logout" class="text-white hover:underline">LogOut</a>
+        </div>
+    </nav>
+
+     <!-- main content -->
+
+      <div class="container mx-auto mt-10 px-4 sm:px0">
+        <div class="max-w-3xl mx-auto bg-gray-300 p-6 rounded-lg shadow-md  flex flex-col">
+
+            <!-- Go Back to all notes Button -->
+        <a href="/note-list" class="mb-4 w-max px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-700 transition">
+            &larr; Go Back
+        </a>
+
+
+            <section>
+                <h2 class="text-xl mb-4 font-semibold">Note Details</h2>
+            <div class="border border-purple-300 p-4 rounded-lg bg-gray-100">
+                    <h3 class="text-lg font-semibold">{{note_artical_detail.youtube_title}}</h3>
+                    
+                    <!-- Editable Note Content -->
+                    <div id="note-content-view" style="white-space: pre-line;">
+                        <p class="text-black-700">{{note_artical_detail.generated_content}}</p>
+                        <button id="edit-btn" class="mt-2 px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-700 transition">Edit</button>
+                    </div>
+                    <form id="note-edit-form" method="POST" action="{% url 'edit_note' note_artical_detail.id %}" style="display:none;">
+                        {% csrf_token %}
+                        <textarea name="generated_content" id="edit-content" class="w-full p-2 border rounded mb-2" rows="8">{{note_artical_detail.generated_content}}</textarea>
+                        <button type="submit" class="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-800 transition">Save</button>
+                        <button type="button" id="cancel-btn" class="px-3 py-1 bg-gray-400 text-white rounded hover:bg-gray-600 transition ml-2">Cancel</button>
+                    </form>
+                    <hr class="my-4 border-purple-300">
+                    <h4 class="text-lg font-semibold mt-4">Youtube Link</h4>
+                    <a href="{{note_artical_detail.youtube_link}}" class="text-purple-300 font-bold hover:underline">{{note_artical_detail.youtube_link}}</a>
+                </div>
+            </section>
+        </div>
+      </div>
+
+    <footer class="text-center p-4 text-white mt-6">
+        Powered By Rohan Mankame
+    </footer>
+
+
+    <script>
+            document.getElementById('edit-btn').onclick = function() {
+                document.getElementById('note-content-view').style.display = 'none';
+                document.getElementById('note-edit-form').style.display = 'block';
+            };
+            document.getElementById('cancel-btn').onclick = function() {
+                document.getElementById('note-content-view').style.display = 'block';
+                document.getElementById('note-edit-form').style.display = 'none';
+            };
+    </script>
+
+
+    
+</body>
+</html>

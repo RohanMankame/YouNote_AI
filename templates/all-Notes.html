@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{user.username}}'s' Notes</title>
+    <!-- Tailwind CDN --> <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 font-sans antialiased">
+    <!-- Nav Bar -->
+     <nav class="bg-purple-600 p-4 text-white flex flex-col sm:flex-row sm:justify-between items-center">
+        <div class="mb-2 sm:mb-0">
+        <h1 class="text-3xl font-bold"><a href="/">YouNote</a></h1>
+        </div>
+        <div class="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
+            <!-- <p class="text-white">Hello {{user.username}}</p> <hr> -->
+            <a href="/" class="text-white hover:underline">GenerateNotes</a>
+            <a href="logout" class="text-white hover:underline">LogOut</a>
+        </div>
+    </nav>
+
+     <!-- Main Content Container -->
+      <div class="container mx-auto mt-10 px-4 sm:px-0">
+
+        <div class="text-center my-4">
+                <a href="/" class="inline-block bg-purple-600 text-white px-6 py-2 rounded-md font-semibold hover:bg-purple-800 transition">
+                    Back to Generate Notes
+                </a>
+            </div>
+
+
+        <div class="max-w-3xl mx-auto  bg-gray-300 p-6 rounded-lg shadow-md">
+
+            <!-- <div class="text-center my-4">
+                <a href="/" class="inline-block bg-purple-600 text-white px-6 py-2 rounded-md font-semibold hover:bg-purple-800 transition">
+                    Back to Generate Notes
+                </a>
+            </div> -->
+
+        
+
+            <!-- Blog Posts Section -->
+             <Section>
+                <h2 class="text-xl mb-4 font-semibold">{{user.username}}'s' Notes</h2>
+                <div class="space-y-4  ">
+                    {%   for note in Note_articals reversed %}
+                    <div class="border border-purple-300 p-4 rounded-lg bg-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                        <a href="note-details/{{note.id}}">
+                            <h3 class="text-lg font-semibold text-purple-600">{{note.youtube_title}}</h3>
+                            <p>
+                                {{note.generated_content|truncatechars:80}}
+                            </p>
+                        </a>
+                        <form method="POST" action="{% url 'delete_note' note.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="bg-red-600 text-white px-2 py-1 rounded hover:bg-red-800 transition">
+                                X
+                            </button>
+                        </form>
+                    </div>
+                    {%   endfor   %}
+                    
+                    <!-- Repeat -->
+                    
+                </div>
+             </Section>
+
+        </div>
+      </div>
+
+      <footer class="text-center p-4 text-white mt-6">
+        Powered By Rohan Mankame
+    </footer>
+</body>
+</html>
